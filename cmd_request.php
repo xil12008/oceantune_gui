@@ -11,7 +11,9 @@
 	
 	echo "User Flag="+$_SESSION['userflag'];
 	echo " q="+$_GET['q'];
+	echo " n="+$_GET['n'];
 	
+	$n = $_GET['n'];
 	$q = $_GET['q'];
 	//------1. create a connection
 	$connection = mysql_connect("localhost", "oceantune_wui","ChunXia&2012");
@@ -37,8 +39,13 @@
 			if(true) {
 				// this a valid user and this is his time slot. @TODO
 				
-				$insert_cmd_result = mysql_query("INSERT INTO command_list (command, create_time, username)
-				VALUES ('".$q."', '".date('Y-m-d H:i:s', strtotime("now"))."','"."developer"."')");
+				$insert_cmd_result = mysql_query("INSERT INTO command_list (command, create_time, username, node_id)
+				VALUES ('".$q."', '".date('Y-m-d H:i:s', strtotime("now"))."','".$_SESSION['username']."',".$n.")");
+				
+				
+				echo "INSERT INTO command_list (command, create_time, username, node_id)
+				VALUES ('".$q."', '".date('Y-m-d H:i:s', strtotime("now"))."','".$_SESSION['username']."'".$n.")";
+				
 				if(!$insert_cmd_result) {
 					die("Insert cmd failed! ".mysql_error());
 				} else {

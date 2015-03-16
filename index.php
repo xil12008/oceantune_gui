@@ -539,7 +539,8 @@ if(!$db_select) {
                         $result = mysql_query("SELECT * FROM testbed_node", $connection);
 						echo "<br>";
                         while ( $row = mysql_fetch_array($result)) {
-                                echo $row["node_name"]." is at (".$row["latitude"].",".$row["longitude"].") <br />";
+                                echo $row["node_id"]." is at (".$row["latitude"].",".$row["longitude"].") <br />";
+				echo '<a href=http://uwsn.engr.uconn.edu/OceanTune/cmd.php?nodeid='.$row["node_id"].'>command</a><br>';
                         }
                         
                         // insert new nodes

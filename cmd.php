@@ -20,6 +20,11 @@ if(!$db_select) {
       die("database selection fail! ".mysql_error());
 }
 
+if( is_null($_GET['nodeid'])){
+	die("Please specify node id".mysql_error());
+}
+
+
 if( is_null($_SESSION['username']) ) {
 	die("Login Required!");	
 }
@@ -117,20 +122,48 @@ body,td,th {
 			//$file = file_get_contents('/home/xiaoyan/result2.txt', true);
 			echo "<font color=\"#FFFFFF\">";
 			
-			$file = "/home/xiaoyan/result2.txt";
+			$file = "/home/xiaoyan/oceantunegui/node".$_GET["nodeid"]."/result2.txt";
 			$file = escapeshellarg($file); // for the security concious (should be everyone!)
-			$line100 = `tail -n 300 $file | grep -v 'tail -n 1 logfile' | grep -v 'bathroom' | grep -v 'logfile' | grep -v 'oceantune' | grep -v 'clean'  `;
+			$line100 = `tail -n 300 $file | grep -v 'tail -n 1 logfile' | grep -v 'bathroom' | grep -v 'logfile' | grep -v 'cleanprocess' `;
 			
 			$dictionary = array(
 				'[0m' => '',
 				'[01;34m' => '',
 				'[30;42' => '',
 				']0;'   => '' ,
-				'[01;36m' => '' ,
+				'[01;36m' => '' 
 			);
 			$htmlString = str_replace(array_keys($dictionary), $dictionary, $line100);
+			$htmlString2 = htmlspecialchars($htmlString);
 			
-			echo nl2br(htmlspecialchars($htmlString));
+			//$htmlString2 = "WTF!!! WTF!!!";
+			
+			printf("<table><tbody>");
+			foreach(preg_split("/((\r?\n)|(\r\n?))/", $htmlString2) as $line){
+				if (strpos($line, 'mirror') !== FALSE){
+						echo "</tbody></table>";
+						echo "<font color=\"#FFFFFF\">";
+						echo $line;
+						echo "</font>";
+						echo "<table><tbody>";
+				}
+				else{
+					printf("<tr>");
+					//$words = preg_split("/(?<=\w)\b\s*/", $line);
+					$words = preg_split("/ +/", $line);
+					foreach ( $words as $word){
+						printf("<td>");
+						echo "<font color=\"#FFFFFF\">";
+						printf("%-40s", $word);
+						echo "</font>";
+						printf("</td>");
+					}
+					printf("</tr>");
+				} 
+				//}
+			} 
+			printf("</tbody></table>");
+			//echo nl2br(htmlspecialchars($htmlString));
 			echo "</font>";
 		  ?>		
           </div>  
@@ -190,10 +223,10 @@ function send_cmd(frm, kCmd)
 	else{
 		cmd=frm.command.value;
 	}
-	xmlhttp.open("GET","cmd_request.php?q="+cmd,true);
+	xmlhttp.open("GET","cmd_request.php?n=<?php echo $_GET['nodeid'] ?>&q="+cmd,true);
 	xmlhttp.send();
 	
-	setTimeout(function(){window.location.href="cmd.php"}, 1000);
+	setTimeout(function(){window.location.href="cmd.php?nodeid=<?php echo $_GET['nodeid'] ?>"}, 1000);
 }
 
 function keyPressed(e, frm)
