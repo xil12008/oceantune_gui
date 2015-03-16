@@ -768,4 +768,12 @@ oceantuneuser@mirror:~$ tail -n 1 logfile
 tail: cannot open `logfile' for reading: No such file or directory
 oceantuneuser@mirror:~$ tail -n 1 logfile
 tail: cannot open `logfile' for reading: No such file or directory
+oceantuneuser@mirror:~$ tail -n 1 logfile
+tail: cannot open `logfile' for reading: No such file or directory
+oceantuneuser@mirror:~$ tail -n 1 logfile
+tail: cannot open `logfile' for reading: No such file or directory
+oceantuneuser@mirror:~$ tail -n 1 logfile
+tail: cannot open `logfile' for reading: No such file or directory
+oceantuneuser@mirror:~$ tail -n 1 logfile
+tail: cannot open `logfile' for reading: No such file or directory
 oceantuneuser@mirror:~$ 
